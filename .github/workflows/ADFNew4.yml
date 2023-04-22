@@ -12,8 +12,8 @@ env:
   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  ARM_TEMPLATE_FILE: https://github.com/sandhyabhagam/Azure-CICD-Test/blob/c28fb8b9c1114ab9979b6ccb8fb5d5cb2d42849d/adf-testproject-dev-001/ARMTemplateForFactory.json
-  ARM_PARAMETERS_FILE: https://github.com/sandhyabhagam/Azure-CICD-Test/blob/c28fb8b9c1114ab9979b6ccb8fb5d5cb2d42849d/adf-testproject-dev-001/ARMTemplateParametersForFactory.json
+  ARM_TEMPLATE_FILE: adf_publish/Azure-CICD-Test/adf-testproject-dev-001/ARMTemplateForFactory.json
+  ARM_PARAMETERS_FILE: adf_publish/Azure-CICD-Test/adf-testproject-dev-001/ARMTemplateParametersForFactory.json
   ARM_RESOURCE_GROUP: 'rg-test-uat-001'
   ARM_FACTORY_NAME: 'adf-testproject-uat-001'
 
