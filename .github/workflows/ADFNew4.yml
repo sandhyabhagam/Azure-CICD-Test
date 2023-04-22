@@ -12,8 +12,6 @@ env:
   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  ARM_TEMPLATE_FILE: adf_publish/Azure-CICD-Test/adf-testproject-dev-001/ARMTemplateForFactory.json
-  ARM_PARAMETERS_FILE: adf_publish/Azure-CICD-Test/adf-testproject-dev-001/ARMTemplateParametersForFactory.json
   ARM_RESOURCE_GROUP: 'rg-test-uat-001'
   ARM_FACTORY_NAME: 'adf-testproject-uat-001'
 
@@ -22,7 +20,9 @@ jobs:
     runs-on:  ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout main branch
+      uses: actions/checkout@v3
+    - name: Checkout adf_publish branch
       uses: actions/checkout@v3
       with:
         ref: adf_publish
@@ -33,11 +33,12 @@ jobs:
   # uses: pietrobolcato/install-azure-cli-action@f01ae8ab9274a69a854ef40018c9686d60d4891e
       uses: pietrobolcato/install-azure-cli-action@v1
 
-    - name: Login to Azure
-      run: |
-         az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
-         az account set --subscription $ARM_SUBSCRIPTION_ID
-    - name: Deploy ARM Templates
-      run: |
+    - name: Azure Login
+      uses: Azure/login@v1.4.3
+      with:
+        # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: Deploy Azure Resource Manager (ARM) Template
+      uses: Azure/arm-deploy@v1.0.6
         az account set --subscription $ARM_SUBSCRIPTION_ID
-        az deployment group create --resource-group $ARM_RESOURCE_GROUP --template-file $ARM_TEMPLATE_FILE --parameters $ARM_PARAMETERS_FILE
+        az deployment group create --resource-group $ARM_RESOURCE_GROUP --template-file "/adf-testproject-dev-001/ARMTemplateForFactory.json" --parameters "/adf-testproject-dev-001/ARMTemplateParametersForFactory.json"
