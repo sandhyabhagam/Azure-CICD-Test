@@ -10,6 +10,8 @@ env:
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
   ARM_RESOURCE_GROUP: "rg-test-uat-001" #DestinationRG
   ARM_FACTORY_NAME: "adf-testproject-uat-001" #DestinationDF
+  ARM_TEMPLATE_FILE: "./Azure-CICD-Test-adf_publish/adf-testproject-dev-001/ARMTemplateForFactory.json"
+  ARM_PARAMETERS_FILE: "./Azure-CICD-Test-adf_publish/adf-testproject-dev-001/ARMTemplateParametersForFactory.json"
 
 jobs:
   deploy:
@@ -39,8 +41,8 @@ jobs:
         # Data factory name
         dataFactoryName: "$ARM_FACTORY_NAME"
         # ARM template file name
-        armTemplateFile: "ARMTemplateForFactory.json"
+        armTemplateFile: "$ARM_TEMPLATE_FILE"
         # ARM template parameters file name
-        armTemplateParametersFile: "ARMTemplateParametersForFactory.json"
+        armTemplateParametersFile: "$ARM_PARAMETERS_FILE"
         # Parameters which will be replaced in the ARM template
         skipAzModuleInstallation: "false"
