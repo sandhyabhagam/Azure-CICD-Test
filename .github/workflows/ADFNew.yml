@@ -1,0 +1,58 @@
+name: ADF_NEW
+
+on: 
+  workflow_dispatch
+
+env:
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  ARM_RESOURCE_GROUP: "rg-test-uat-001" #DestinationRG
+  ARM_FACTORY_NAME: "adf-testproject-uat-001" #DestinationDF
+
+jobs:
+  deploy:
+    runs-on:  ubuntu-latest
+
+    steps:
+    - name: checkout main branch
+      uses: actions/checkout@v3
+    - name: Checkout adf_publish branch
+      uses: actions/checkout@v3
+    #- name: Read ARMTemplateForFactory.json
+      #id: package
+      #uses: juliangruber/read-file-action@v1
+      #with:
+        #path: ./adf-testproject-dev-001/ARMTemplateForFactory.json
+      
+    #steps:
+      #- name: Checkout repository
+        #uses: actions/checkout@v3
+      #- name: Read package.json
+        #id: package
+        #uses: juliangruber/read-file-action@v1
+        #with:
+          #path: ./package.json
+      #- name: Echo package.json
+        #run: echo "${{ steps.package.outputs.content }}"
+        #SourceWorkspaceName: "adf-testproject-dev-001" #SourceADF
+        #ARM_TEMPLATE_FILE: "./adf-testproject-dev-001/ARMTemplateForFactory.json"
+        #ARM_PARAMETERS_FILE: "./adf-testproject-dev-001/ARMTemplateParametersForFactory.json"
+      
+    - name: Install azure-cli
+  # You may pin to the exact commit or the version.
+  # uses: pietrobolcato/install-azure-cli-action@f01ae8ab9274a69a854ef40018c9686d60d4891e
+      uses: pietrobolcato/install-azure-cli-action@v1
+
+    - name: Login to Azure
+      run: |
+         az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
+         az account set --subscription $ARM_SUBSCRIPTION_ID
+    - name: Deploy resources
+      uses: Azure/data-factory-deploy-action@v1.2.0
+      with:
+        resourceGroupName: "$ARM_RESOURCE_GROUP"
+        dataFactoryName: "$ARM_FACTORY_NAME"
+        armTemplateFile: ./adf-testproject-dev-001/ARMTemplateForFactory.json
+        armTemplateParametersFile: ./adf-testproject-dev-001/ARMTemplateParametersForFactory.json
