@@ -54,5 +54,5 @@ jobs:
       with:
         resourceGroupName: "$ARM_RESOURCE_GROUP"
         dataFactoryName: "$ARM_FACTORY_NAME"
-        armTemplateFile: ./adf-testproject-dev-001/ARMTemplateForFactory.json
-        armTemplateParametersFile: ./adf-testproject-dev-001/ARMTemplateParametersForFactory.json
+        armTemplateFile: ARMTemplateForFactory.json
+        armTemplateParametersFile: ARMTemplateParametersForFactory.json
