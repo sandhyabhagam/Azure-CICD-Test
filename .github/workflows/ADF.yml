@@ -1,36 +1,39 @@
-# This is a basic workflow to help you get started with Actions
+name: ADF UAT Deployment
 
-name: CI
+on: 
+  workflow_dispatch
 
-# Controls when the workflow will run
-on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  #push:
-    #branches: [ "main" ]
-  #pull_request:
-    #branches: [ "main" ]
+env:
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  ARM_RESOURCE_GROUP: "rg-test-uat-001" #DestinationRG
+  ARM_FACTORY_NAME: "adf-testproject-uat-001" #DestinationDF
+  SourceWorkspaceName: "adf-testproject-dev-001" #SourceADF
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+  deploy:
+    runs-on:  ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+    - name: checkout main branch
+      uses: actions/checkout@v3
+    - name: Checkout adf_publish branch
+      uses: actions/checkout@v3
+      with:
+        ref: adf_publish
+      
+    - name: Install azure-cli
+  # You may pin to the exact commit or the version.
+  # uses: pietrobolcato/install-azure-cli-action@f01ae8ab9274a69a854ef40018c9686d60d4891e
+      uses: pietrobolcato/install-azure-cli-action@v1
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+    - name: Login to Azure
+      run: |
+         az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
+         az account set --subscription $ARM_SUBSCRIPTION_ID
+    - name: Deploy ARM Templates
+      run: |
+        az account set --subscription "$ARM_SUBSCRIPTION_ID"
+        az deployment group create --resource-group "$ARM_RESOURCE_GROUP" --template-file ./adf-testproject-dev-001/ARMTemplateForFactory.json --parameters  ./adf-env-parameters/ARMTemplateParametersForFactory.json --name "$ARM_FACTORY_NAME"
