@@ -24,7 +24,7 @@ jobs:
       id: read_file
       uses: andstor/file-reader-action@v1
       with:
-        path: "./adf-testproject-dev-001/ARMTemplateForFactory.json"
+        path: ./adf-testproject-dev-001/ARMTemplateForFactory.json
     - name: Load Parameters file as Github_Parameter
       run: echo "version=$(cat VERSION)" >> $GITHUB_OUTPUT
     #- name: Read ARMTemplateForFactory.json
