@@ -24,7 +24,7 @@ jobs:
       id: package
       uses: juliangruber/read-file-action@v1
       with:
-        path: Azure-CICD-Test/adf-testproject-dev-001/ARMTemplateForFactory.json
+        path: /adf-testproject-dev-001/ARMTemplateForFactory.json
     - name: Load Parameters file as Github_Parameter
       run: echo "${{ steps.package.outputs.content }}" >> $GITHUB_OUTPUT
     #- name: Read ARMTemplateForFactory.json
