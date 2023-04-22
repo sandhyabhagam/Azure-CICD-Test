@@ -3,28 +3,16 @@ name: ADF_NEW_2
 on: 
   workflow_dispatch
 
-inputs:
-  resourceGroupName:
-    description: 'rg-test-uat-001'
-    required: true
-  dataFactoryName:
-    description: 'adf-testproject-uat-001'
-    required: true
-  armTemplateFile:
-    description: 'ARMTemplateForFactory.json'
-    required: false
-    default: 'ARMTemplateForFactory.json'
-  armTemplateParametersFile:
-    description: 'ARMTemplateParametersForFactory.json'
-    required: false
-    default: 'ARMTemplateParametersForFactory.json'
-  additionalParameters:
-    description: 'Parameters which will be replaced in the ARM template'
-    required: false
-    default: ''
+env:
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  ARM_RESOURCE_GROUP: "rg-test-uat-001" #DestinationRG
+  ARM_FACTORY_NAME: "adf-testproject-uat-001" #DestinationDF
 
-runs:
-  using: 'composite'
+jobs:
+  deploy:
     runs-on:  ubuntu-latest
 
     steps:
@@ -32,25 +20,6 @@ runs:
       uses: actions/checkout@v3
     - name: Checkout adf_publish branch
       uses: actions/checkout@v3
-    #- name: Read ARMTemplateForFactory.json
-      #id: package
-      #uses: juliangruber/read-file-action@v1
-      #with:
-        #path: ./adf-testproject-dev-001/ARMTemplateForFactory.json
-      
-    #steps:
-      #- name: Checkout repository
-        #uses: actions/checkout@v3
-      #- name: Read package.json
-        #id: package
-        #uses: juliangruber/read-file-action@v1
-        #with:
-          #path: ./package.json
-      #- name: Echo package.json
-        #run: echo "${{ steps.package.outputs.content }}"
-        #SourceWorkspaceName: "adf-testproject-dev-001" #SourceADF
-        #ARM_TEMPLATE_FILE: "./adf-testproject-dev-001/ARMTemplateForFactory.json"
-        #ARM_PARAMETERS_FILE: "./adf-testproject-dev-001/ARMTemplateParametersForFactory.json"
       
     - name: Install azure-cli
   # You may pin to the exact commit or the version.
@@ -62,9 +31,16 @@ runs:
          az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
          az account set --subscription $ARM_SUBSCRIPTION_ID
 
-    - name: Run ARM deploy
-      uses: azure/arm-deploy@v1
+    - name: data-factory-deploy
+      uses: Azure/data-factory-deploy-action@v1.2.0
       with:
-        resourceGroupName: ${{ inputs.resourceGroupName }}
-        template: ${{ inputs.armTemplateFile }}
-        parameters: ${{ inputs.armTemplateParametersFile }} factoryName=${{ inputs.dataFactoryName }} ${{ inputs.additionalParameters }}
+        # Data Factory resource group name
+        resourceGroupName: "$ARM_RESOURCE_GROUP"
+        # Data factory name
+        dataFactoryName: "$ARM_FACTORY_NAME"
+        # ARM template file name
+        armTemplateFile: "ARMTemplateForFactory.json"
+        # ARM template parameters file name
+        armTemplateParametersFile: "ARMTemplateParametersForFactory.json"
+        # Parameters which will be replaced in the ARM template
+        skipAzModuleInstallation: "false"
