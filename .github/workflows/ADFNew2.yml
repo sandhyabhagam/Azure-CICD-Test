@@ -22,10 +22,6 @@ inputs:
     description: 'Parameters which will be replaced in the ARM template'
     required: false
     default: ''
-  skipAzModuleInstallation:
-    description: 'Parameters which skip the Az module installation'
-    required: false
-    default: 'false
 
 runs:
   using: 'composite'
