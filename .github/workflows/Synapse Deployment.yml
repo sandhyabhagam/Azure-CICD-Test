@@ -6,12 +6,12 @@ env:
   clientAppSecret: '${{ secrets.ARM_CLIENT_SECRET }}'
   subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID}}'
   tenantId: '${{ secrets.ARM_TENANT_ID}}'
-  TargetResourceGroup: "rg-"
-  TargetWorkspaceName: "synw"
-  SourceWorkspaceName: "synw"
+  TargetResourceGroup: "rg-test-uat-001"
+  TargetWorkspaceName: "synw-testproject-uat-001"
+  SourceWorkspaceName: "synw-testproject-dev-001"
 jobs:
   release:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v3
