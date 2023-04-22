@@ -1,0 +1,44 @@
+name: ADF_NEW_3
+
+on: 
+  workflow_dispatch
+
+env:
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  ARM_FACTORY_NAME: "adf-testproject-uat-001"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: 'This deploys to UAT'
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Azure Login
+      uses: Azure/login@v1.4.3
+      with:
+        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+        # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+       
+        
+    - name: Deploy Azure Resource Manager (ARM) Template
+      uses: Azure/arm-deploy@v1.0.6
+      with:
+        # Provide the scope of the deployment. Valid values are: 'resourcegroup', 'managementgroup', 'subscription'
+        scope: "resourcegroup"
+        # Target resource group of the deployment.
+        resourceGroupName: $ARM_RESOURCE_GROUP
+        # Specify the path to the ADF ARM template. In this scenario, the workflow is in the same branch, 
+        # hence we only add the folder and arm template name to the path
+        template: ./Azure-CICD-Test-adf_publish/adf-testproject-dev-001/ARMTemplateForFactory.json
+        # Incremental (only add resources to resource group) or Complete (remove extra resources from resource group) or Validate (only validates the template).
+        deploymentMode: Incremental
+        # Supply deployment parameter values. In this simple scenario, 
+        # I am only passing the name of the target ADF to which this is being deployed
+        parameters: ./Azure-CICD-Test-adf_publish/adf-testproject-dev-001/ARMTemplateParametersForFactory.json
