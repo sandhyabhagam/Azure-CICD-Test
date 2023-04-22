@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: 'This deploys to Production'
+    name: 'This deploys to UAT'
     steps:
     - uses: actions/checkout@v3
 
@@ -20,9 +20,9 @@ jobs:
       uses: Azure/arm-deploy@v1.0.6
       with:
         # Provide the scope of the deployment. Valid values are: 'resourcegroup', 'managementgroup', 'subscription'
-        scope: "resourcegroup"
+        scope: 'resourcegroup'
         # Target resource group of the deployment.
-        resourceGroupName: $ARM_RESOURCE_GROUP
+        resourceGroupName: 'rg-test-uat-001'
         # Specify the path to the ADF ARM template. In this scenario, the workflow is in the same branch, 
         # hence we only add the folder and arm template name to the path
         template: ./Azure-CICD-Test-adf_publish/adf-testproject-dev-001/ARMTemplateForFactory.json
@@ -30,4 +30,4 @@ jobs:
         deploymentMode: Incremental
         # Supply deployment parameter values. In this simple scenario, 
         # I am only passing the name of the target ADF to which this is being deployed
-        parameters: ./Azure-CICD-Test-adf_publish/adf-testproject-dev-001/ARMTemplateParametersForFactory.json
+        parameters: factoryName=adf-testproject-uat-001
