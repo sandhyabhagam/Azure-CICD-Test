@@ -12,10 +12,10 @@ env:
   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  ARM_TEMPLATE_FILE: adf-testproject-dev-001/ARMTemplateForFactory.json
-  ARM_PARAMETERS_FILE: adf-testproject-dev-001/ARMTemplateParametersForFactory.json
-  ARM_RESOURCE_GROUP: "rg-test-uat-001"
-  ARM_FACTORY_NAME: "adf-testproject-uat-001"
+  ARM_TEMPLATE_FILE: 'adf-testproject-dev-001/ARMTemplateForFactory.json'
+  ARM_PARAMETERS_FILE: 'adf-testproject-dev-001/ARMTemplateParametersForFactory.json'
+  ARM_RESOURCE_GROUP: 'rg-test-uat-001'
+  ARM_FACTORY_NAME: 'adf-testproject-uat-001'
 
 jobs:
   deploy:
@@ -39,4 +39,4 @@ jobs:
     - name: Deploy ARM Templates
       run: |
         az account set --subscription "$ARM_SUBSCRIPTION_ID"
-        az deployment group create --resource-group "$ARM_RESOURCE_GROUP" --template-file "$ARM_TEMPLATE_FILE" --parameters "@$ARM_PARAMETERS_FILE" --name "$ARM_FACTORY_NAME-deployment"
+        az deployment group create --resource-group "$ARM_RESOURCE_GROUP" --template-file "$ARM_TEMPLATE_FILE" --parameters "$ARM_PARAMETERS_FILE" --name "$ARM_FACTORY_NAME-deployment"
