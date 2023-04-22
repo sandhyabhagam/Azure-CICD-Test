@@ -28,7 +28,7 @@ jobs:
         resourceGroupName: 'rg-test-uat-001'
         # Specify the path to the ADF ARM template. In this scenario, the workflow is in the same branch, 
         # hence we only add the folder and arm template name to the path
-        template: ./Azure-CICD-Test-adf_publish/adf-testproject-dev-001/ARMTemplateForFactory.json
+        template: ./adf-testproject-dev-001/ARMTemplateForFactory.json
         # Incremental (only add resources to resource group) or Complete (remove extra resources from resource group) or Validate (only validates the template).
         deploymentMode: Incremental
         # Supply deployment parameter values. In this simple scenario, 
