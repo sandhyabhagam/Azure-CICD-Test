@@ -48,4 +48,4 @@ jobs:
     # Run the Python script that uses the access token to perform Databricks model training
     - name: Run Model Training
       run: |
-        python PythonFile/databricks-model-training-automation.py ${{ steps.extract-value.outputs.access_token}} # Use the access token output variable as an input parameter to the Python script
+        python PythonFile/databricks-automation.py ${{ steps.extract-value.outputs.access_token}} # Use the access token output variable as an input parameter to the Python script
