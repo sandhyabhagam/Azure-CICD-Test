@@ -11,6 +11,8 @@ env:
   ARM_RESOURCE_GROUP: "rg-test-uat-001" #DestinationRG
   ARM_FACTORY_NAME: "adf-testproject-uat-001" #DestinationDF
   SourceWorkspaceName: "adf-testproject-dev-001" #SourceADF
+  ARM_TEMPLATE_FILE: "./adf-testproject-dev-001/ARMTemplateForFactory.json"
+  ARM_PARAMETERS_FILE: "./adf-testproject-dev-001/ARMTemplateParametersForFactory.json"
 
 jobs:
   deploy:
@@ -21,8 +23,6 @@ jobs:
       uses: actions/checkout@v3
     - name: Checkout adf_publish branch
       uses: actions/checkout@v3
-      ARM_TEMPLATE_FILE: "./adf-testproject-dev-001/ARMTemplateForFactory.json"
-      ARM_PARAMETERS_FILE: "./adf-testproject-dev-001/ARMTemplateParametersForFactory.json"
       with:
         ref: adf_publish
       
