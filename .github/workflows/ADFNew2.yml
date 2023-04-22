@@ -41,8 +41,8 @@ jobs:
         # Data factory name
         dataFactoryName: "$ARM_FACTORY_NAME"
         # ARM template file name
-        armTemplateFile: "$ARM_TEMPLATE_FILE"
+        armTemplateFile: "./Azure-CICD-Test-adf_publish/adf-testproject-dev-001/ARMTemplateForFactory.json"
         # ARM template parameters file name
-        armTemplateParametersFile: "$ARM_PARAMETERS_FILE"
+        armTemplateParametersFile: "./Azure-CICD-Test-adf_publish/adf-testproject-dev-001/ARMTemplateParametersForFactory.json"
         # Parameters which will be replaced in the ARM template
         skipAzModuleInstallation: "false"
