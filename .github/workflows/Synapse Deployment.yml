@@ -1,0 +1,34 @@
+name: Synapse Deployment
+on: 
+  workflow_dispatch
+env:
+  clientAppId: '${{ secrets.ARM_CLIENT_ID }}'
+  clientAppSecret: '${{ secrets.ARM_CLIENT_SECRET }}'
+  subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID}}'
+  tenantId: '${{ secrets.ARM_TENANT_ID}}'
+  TargetResourceGroup: "rg-"
+  TargetWorkspaceName: "synw"
+  SourceWorkspaceName: "synw"
+jobs:
+  release:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+      - name: Checkout workspace_publish branch
+        uses: actions/checkout@v3
+        with:
+          ref: workspace_publish
+      - name: Build UAT
+        uses: Azure/synapse-workspace-deployment@V1.7.0
+        with:
+          TargetWorkspaceName: '${{ env.TargetWorkspaceName }}'
+          TemplateFile: ./${{ env.SourceWorkspaceName }}/TemplateForWorkspace.json
+          ParametersFile: ./${{ env.SourceWorkspaceName }}/TemplateParametersForWorkspace.json
+          environment: Azure Public
+          resourceGroup: '${{ env.TargetResourceGroup }}'
+          clientId: '${{ env.clientAppId }}'
+          clientSecret: '${{ env.clientAppSecret }}'
+          subscriptionId: '${{ env.subscriptionId }}'
+          tenantId: '${{ env.tenantId }}'
+          operation: deploy
