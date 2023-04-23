@@ -1,4 +1,4 @@
-name: Deploy ARM Templates to Data Factory
+name: ADF_New_5
 
 on:
 #   push:
