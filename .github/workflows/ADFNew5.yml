@@ -1,28 +1,29 @@
-name: ADF_New_5
+name: Deploy ARM Templates to Data Factory
 
-on: 
-  workflow_dispatch
+on:
+#   push:
+#     branches:
+#       - main
+
+   workflow_dispatch:
 
 env:
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  ARM_RESOURCE_GROUP: "rg-test-uat-001" #DestinationRG
-  ARM_FACTORY_NAME: "adf-testproject-uat-001" #DestinationDF
-  SourceWorkspaceName: "adf-testproject-dev-001" #SourceADF
+  ARM_TEMPLATE_FILE: "./adf-test-dev-001/ARMTemplateForFactory.json"
+  ARM_PARAMETERS_FILE: "./adf-test-dev-001/ARMTemplateParametersForFactory.json"
+  ARM_RESOURCE_GROUP: "rg-testing-uat-001"
+  ARM_FACTORY_NAME: "adf-test-uat-001"
 
 jobs:
   deploy:
     runs-on:  ubuntu-latest
 
     steps:
-    - name: checkout main branch
+    - name: Checkout code
       uses: actions/checkout@v3
-    - name: Checkout adf_publish branch
-      uses: actions/checkout@v3
-      with:
-        ref: adf_publish
       
     - name: Install azure-cli
   # You may pin to the exact commit or the version.
@@ -36,4 +37,4 @@ jobs:
     - name: Deploy ARM Templates
       run: |
         az account set --subscription "$ARM_SUBSCRIPTION_ID"
-        az deployment group create --resource-group "$ARM_RESOURCE_GROUP" --template-file /adf-testproject-dev-001/ARMTemplateForFactory.json --parameters  /adf-testproject-dev-001/ARMTemplateParametersForFactory.json --name "$ARM_FACTORY_NAME"
+        az deployment group create --resource-group "$ARM_RESOURCE_GROUP" --template-file "$ARM_TEMPLATE_FILE" --parameters "@$ARM_PARAMETERS_FILE" --name "$ARM_FACTORY_NAME-deployment"
