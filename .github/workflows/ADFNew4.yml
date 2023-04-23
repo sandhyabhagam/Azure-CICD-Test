@@ -43,4 +43,4 @@ jobs:
     - name: Deploy Azure Resource Manager (ARM) Template
       uses: Azure/arm-deploy@v1.0.6
         az account set --subscription $ARM_SUBSCRIPTION_ID
-        az deployment group create --resource-group $ARM_RESOURCE_GROUP --template-file ./${{env.SourceWorkspaceName}}/TemplateForWorkspace.json --parameters ./${{env.SourceWorkspaceName}}/TemplateParametersForWorkspace.json
+        az deployment group create --resource-group $ARM_RESOURCE_GROUP --template-file ./tree/adf_publish/${{env.SourceWorkspaceName}}/TemplateForWorkspace.json --parameters ./tree/adf_publish/${{env.SourceWorkspaceName}}/TemplateParametersForWorkspace.json
