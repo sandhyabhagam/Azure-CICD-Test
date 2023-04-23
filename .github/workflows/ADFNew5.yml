@@ -12,8 +12,8 @@ env:
   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  ARM_TEMPLATE_FILE: "./adf-test-dev-001/ARMTemplateForFactory.json"
-  ARM_PARAMETERS_FILE: "./adf-test-dev-001/ARMTemplateParametersForFactory.json"
+  ARM_TEMPLATE_FILE: "./adf-testproject-dev-001/ARMTemplateForFactory.json"
+  ARM_PARAMETERS_FILE: "./adf-testproject-dev-001/ARMTemplateParametersForFactory.json"
   ARM_RESOURCE_GROUP: "rg-testing-uat-001"
   ARM_FACTORY_NAME: "adf-test-uat-001"
 
