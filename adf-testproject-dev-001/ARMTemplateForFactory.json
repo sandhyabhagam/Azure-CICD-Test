@@ -6,6 +6,10 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-testproject-dev-001"
+		},
+		"ls_testproject_dev_001_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://storagetestdev001.dfs.core.windows.net/"
 		}
 	},
 	"variables": {
@@ -34,6 +38,19 @@
 				},
 				"annotations": [],
 				"lastPublishTime": "2023-04-22T05:47:07Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_testproject_dev_001')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ls_testproject_dev_001_properties_typeProperties_url')]"
+				}
 			},
 			"dependsOn": []
 		}

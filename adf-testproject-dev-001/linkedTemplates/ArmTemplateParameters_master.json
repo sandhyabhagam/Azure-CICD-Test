@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "adf-testproject-dev-001"
 		},
+		"ls_testproject_dev_001_properties_typeProperties_url": {
+			"value": "https://storagetestdev001.dfs.core.windows.net/"
+		},
 		"containerUri": {
 			"value": ""
 		},
