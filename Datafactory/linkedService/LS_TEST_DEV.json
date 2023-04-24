@@ -1,0 +1,10 @@
+{
+	"name": "LS_TEST_DEV",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://storagetestdev001.dfs.core.windows.net/"
+		}
+	}
+}
