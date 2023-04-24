@@ -36,6 +36,19 @@
 				"lastPublishTime": "2023-04-22T05:47:07Z"
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_TEST_DEV')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "https://storagetestdev001.dfs.core.windows.net/"
+				}
+			},
+			"dependsOn": []
 		}
 	]
 }
